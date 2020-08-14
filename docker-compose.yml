@@ -1,26 +1,26 @@
 version: '3.5'
 services:
-  patzy-official-app:
+  laravel-gallery-app:
     build:
       context: '.'
       dockerfile: 'docker/Dockerfile'
       args:
         uid: ${UID}
-    container_name: patzy-official-app
+    container_name: laravel-gallery-app
     environment:
       - APACHE_RUN_USER=#${UID}
       - APACHE_RUN_GROUP=#${UID}
     volumes:
       - .:/var/www/html
     ports:
-      - 3000:80
+      - 8000:80
     networks:
       backend:
         aliases:
-          - patzy-official-app
-  patzy-mariadb:
+          - laravel-gallery-app
+  gallery-mariadb:
     image: mariadb:10.4.3-bionic
-    container_name: patzy-mariadb
+    container_name: gallery-mariadb
     restart: always
     ports:
       - 3080:3306
@@ -35,11 +35,11 @@ services:
     command:
       - '--character-set-server=utf8mb4'
       - '--collation-server=utf8mb4_unicode_ci'
-  patzy-pma:
+  gallery-pma:
     image: phpmyadmin/phpmyadmin:5
-    container_name: patzy-pma
+    container_name: gallery-pma
     depends_on:
-      - patzy-mariadb
+      - gallery-mariadb
     restart: always
     ports:
       - 3880:80
@@ -48,7 +48,7 @@ services:
         aliases:
           - phpmyadmin
     environment:
-      PMA_HOST: patzy-mariadb
+      PMA_HOST: gallery-mariadb
       PMA_PORT: 3306
 networks:
   backend:

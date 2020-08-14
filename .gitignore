@@ -1,5 +1,6 @@
 /node_modules
-/public/*
+/public/hot
+/public/storage
 /storage/*.key
 /vendor
 .env
@@ -9,5 +10,3 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-/.idea/*
-/AdminLTE-3.0.5
