@@ -1,0 +1,59 @@
+version: '3.5'
+services:
+  patzy-official-app:
+    build:
+      context: '.'
+      dockerfile: 'docker/Dockerfile'
+      args:
+        uid: ${UID}
+    container_name: patzy-official-app
+    environment:
+      - APACHE_RUN_USER=#${UID}
+      - APACHE_RUN_GROUP=#${UID}
+    volumes:
+      - .:/var/www/html
+    ports:
+      - 3000:80
+    networks:
+      backend:
+        aliases:
+          - patzy-official-app
+  patzy-mariadb:
+    image: mariadb:10.4.3-bionic
+    container_name: patzy-mariadb
+    restart: always
+    ports:
+      - 3080:3306
+    volumes:
+      - /var/lib/mysql
+    networks:
+      backend:
+        aliases:
+          - db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    command:
+      - '--character-set-server=utf8mb4'
+      - '--collation-server=utf8mb4_unicode_ci'
+  patzy-pma:
+    image: phpmyadmin/phpmyadmin:5
+    container_name: patzy-pma
+    depends_on:
+      - patzy-mariadb
+    restart: always
+    ports:
+      - 3880:80
+    networks:
+      backend:
+        aliases:
+          - phpmyadmin
+    environment:
+      PMA_HOST: patzy-mariadb
+      PMA_PORT: 3306
+networks:
+  backend:
+    external: false
+    name: backend-network
+volumes:
+  redis-datas:
+    driver: local
