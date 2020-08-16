@@ -10,8 +10,9 @@
         <br>
         <b-container class="bv-example-row">
             <b-row>
-                <b-col cols="4" v-for="(file,key) in files" v-bind:key="file.id">
-                    <img v-img class="preview" :src="file.image_url"/>
+                <b-col cols="4" id="margin-10" v-for="(file,key) in files" v-bind:key="file.id">
+                    <img v-if="file.id > 0" v-img class="preview" :src="file.image_url"/>
+                    <img v-else class="preview" v-bind:ref="'preview'+parseInt(key)"/>
                     <br>
                     <div class="action-container">
                         <b-button v-on:click="removeFile(key,file.id)" variant="danger">
@@ -36,31 +37,36 @@
                 $(element).modal('show')
             },
             handleFiles() {
-                let loader = this.$loading.show({
-                    // Optional parameters
-                    container: this.fullPage ? null : this.$refs.formContainer,
-                    canCancel: false,
-                    onCancel: this.onCancel,
-                });
                 let uploadedFiles = this.$refs.files.files;
                 for (var i = 0; i < uploadedFiles.length; i++) {
-                    let formData = new FormData();
-                    formData.append('file', uploadedFiles[i]);
-                    axios.post('http://localhost:8000/api/images/upload',
-                        formData,
-                        {
-                            headers: {
-                                'Content-Type': 'multipart/form-data'
-                            },
-                        }
-                    ).then(data => {
-                        this.files.push(data.data.data);
-                        loader.hide()
-                    }).catch(error => {
-                        console.log(error);
+                    if (/\.(jpe?g|png)$/i.test(uploadedFiles[i].name)) {
+                        let formData = new FormData();
+                        formData.append('file', uploadedFiles[i]);
+                        let loader = this.$loading.show({
+                            // Optional parameters
+                            container: this.fullPage ? null : this.$refs.formContainer,
+                            canCancel: false,
+                            onCancel: this.onCancel,
+                        });
+                        axios.post('http://localhost:8000/api/images/upload',
+                            formData,
+                            {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                },
+                            }
+                        ).then(data => {
+                            this.files.push(data.data.data);
+                            loader.hide()
+                        }).catch(error => {
+                            console.log(error);
 
-                    });
+                        });
+                    }else{
+                        this.files.push(uploadedFiles[i]);
+                    }
                 }
+
                 this.getImagePreviews();
             },
             getImagePreviews() {
@@ -157,5 +163,8 @@
     div.action-container {
         margin-top: 20px;
         text-align: center;
+    }
+    #margin-10{
+        padding-top: 10px;
     }
 </style>
