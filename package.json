@@ -22,6 +22,7 @@
     "cropperjs": "^1.5.7",
     "handy-uploader": "^1.1.2",
     "mdbvue": "^6.7.1",
+    "v-img": "^0.2.0",
     "vlightbox": "^2.0.2",
     "vue-axios": "^2.1.5",
     "vue-image-lightbox": "^7.1.3",

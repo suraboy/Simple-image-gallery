@@ -11,10 +11,9 @@
         <b-container class="bv-example-row">
             <b-row>
                 <b-col cols="4" v-for="(file,key) in files" v-bind:key="file.id">
-                    <img class="preview" :src="file.image_url"/>
+                    <img v-img class="preview" :src="file.image_url"/>
                     <br>
                     <div class="action-container">
-                        <b-button v-on:click="showModal()" variant="success"><i class="fa fa-search"></i></b-button>
                         <b-button v-on:click="removeFile(key,file.id)" variant="danger">
                             <i class="fa fa-trash-o"></i>
                         </b-button>
@@ -22,7 +21,6 @@
                 </b-col>
             </b-row>
         </b-container>
-        <example-modal ref="modal"></example-modal>
     </div>
 </template>
 <script>
