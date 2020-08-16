@@ -13,10 +13,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group([
+    'namespace' => 'Web',
+    'middleware' => ['auth']
+], function ($route) {
+    $route->get('/', 'HomeController@index')->name('home');
+    $route->group([
+        'prefix' => 'uploads'
+    ], function ($route){
+        $route->get('/images','ImagesController@index')->name('images.gallery');
+    });
+});

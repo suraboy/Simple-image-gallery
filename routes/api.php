@@ -17,3 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group([
+    'namespace' => 'Api',
+    'middleware' => 'auth'
+], function ($route) {
+    $route->group([
+        'prefix' => 'images'
+    ], function ($route){
+        $route->get('/', 'ImagesController@getDiskImagesInfo');
+        $route->post('/upload', 'ImagesController@imageUploadPost');
+        $route->delete('/remove/{id}', 'ImagesController@removeImage');
+    });
+});

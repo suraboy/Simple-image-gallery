@@ -15,12 +15,24 @@ window.Vue = require('vue');
  *
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
-
+import VueAxios from 'vue-axios'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import Loading from 'vue-loading-overlay';
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css';
+// Init plugin
+Vue.use(Loading);
+// Axios
+Vue.use(VueAxios, axios)
+// Install BootstrapVue
+Vue.use(BootstrapVue)
+// Optionally install the BootstrapVue icon components plugin
+Vue.use(IconsPlugin)
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
+Vue.component('home-component', require('./components/HomeComponent.vue').default);
+Vue.component('image-component', require('./components/FileComponent.vue').default);
+Vue.component('image-modal-component', require('./components/ImageModalComponent.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
