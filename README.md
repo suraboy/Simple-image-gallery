@@ -14,7 +14,7 @@ https://github.com/suraboy/laravel-image-gallery.git
 
 Run the docker for development:
 ---------------------
-First you need to copy `.env.local` to `.env` for setup environment of appplication
+First you need to copy `.env.example` to `.env` for setup environment of appplication and create db `laravel_image_gallery` in `http://localhost:3880`
 
 You can now build, create, start, and attach to containers to the environment for your application. To build the containers use following command inside the project root:
 
@@ -41,6 +41,14 @@ docker exec -it laravel-gallery-app composer install
 or
 ```bash
 docker exec -it laravel-gallery-app composer update
+```
+
+Migration Database
+------------------------------------
+Run the composer installer:
+
+```bash
+docker exec -it laravel-gallery-app php artisan migrate
 ```
 
 Running Application
