@@ -106,6 +106,10 @@ class ImagesController extends Controller
      */
     public function removeImage(Request $requset, $id)
     {
+        $img = $this->imageRepositories->where('id',$id)->first();
+        $image_path = $img->image_url;
+        $path = explode('http://localhost:8000/images/',$image_path);
+        unlink(public_path().'/images/'.$path[1]);
         $this->imageRepositories->delete($id);
         return response()->view([]);
     }
